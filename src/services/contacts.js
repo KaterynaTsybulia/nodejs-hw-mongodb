@@ -6,11 +6,10 @@ export const getContactById = contactId => ContactCollection.findById(contactId)
 
 export const addContact = payload => ContactCollection.create(payload);
 
-export const patchContact = async (_id, payload, options = {}) => {
-    const { upsert = false } = options;
-    const result = await ContactCollection.findOneAndUpdate({ _id }, payload, {
+export const patchContact = async (contactId, payload, options = {}) => {
+    const result = await ContactCollection.findOneAndUpdate({ _id: contactId }, payload, {
         new: true,
-        upsert,
+        ...options,
         includeResultMetadata:true,
     });
 
@@ -24,4 +23,7 @@ export const patchContact = async (_id, payload, options = {}) => {
     };
 };
 
-export const deleteContact = filter=> ContactCollection.findOneAndDelete(filter);
+export const deleteContact = async (contactId) => {
+    const contact = await ContactCollection.findOneAndDelete({ _id: contactId });
+    return contact;
+};
