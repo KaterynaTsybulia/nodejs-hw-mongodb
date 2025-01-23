@@ -11,6 +11,7 @@ export const getContactsController = async (req, res) => {
     const { page, perPage } = parsePaginationParams(req.query);
     const { sortBy, sortOrder } = parseSortParams(req.query, sortByList);
     const filter = parseContactFilterParams(req.query);
+    filter.userId = req.user._id;
 
     const data = await contactServices.getContacts({ page, perPage, sortBy, sortOrder, filter });
 
@@ -22,8 +23,9 @@ export const getContactsController = async (req, res) => {
 };
 
 export const getContactsByIdController = async (req, res) => {
+        const { _id: userId } = req.user;
         const { contactId } = req.params;
-        const data = await contactServices.getContactById(contactId);
+    const data = await contactServices.getContact({ contactId, userId });
 
     if (!data) {
         throw createError(404, 'Contact not found');
@@ -37,7 +39,8 @@ export const getContactsByIdController = async (req, res) => {
 };
 
 export const addContactsController = async (req, res) => {
-    const data = await contactServices.addContact(req.body);
+    const { _id: userId } = req.user;
+    const data = await contactServices.addContact({ ...req.body, userId });
 
     res.status(201).json({
         status: 201,
@@ -47,8 +50,9 @@ export const addContactsController = async (req, res) => {
 };
 
 export const patchContactController = async (req, res) => {
+    const { _id: userId } = req.user;
     const { contactId } = req.params;
-    const result = await contactServices.patchContact(contactId, req.body);
+    const result = await contactServices.patchContact({contactId, userId}, req.body);
 
     if (!result) {
         throw createError(404, "Contact not found");
@@ -62,8 +66,9 @@ export const patchContactController = async (req, res) => {
 };
 
 export const deleteContactController = async (req, res, next) => {
+    const { _id: userId } = req.user;
     const { contactId } = req.params;
-    const contact = await contactServices.deleteContact({_id: contactId});
+    const contact = await contactServices.deleteContact(contactId, userId);
 
     if (!contact) {
         next(createError(404, "Contact not found"));
