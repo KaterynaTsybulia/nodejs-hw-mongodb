@@ -2,9 +2,13 @@ import createError from "http-errors";
 
 import * as contactServices from "../services/contacts.js";
 
+import { saveFileToUploadDir } from "../utils/saveFileToUploadDir.js";
+import { saveFileToCloudinary } from "../utils/saveFileToCloudinary.js";
 import { parsePaginationParams } from "../utils/parsePaginationParams.js";
 import { parseSortParams } from "../utils/parseSortParams.js";
 import { parseContactFilterParams } from "../utils/parseContactFilterParams.js";
+import { getEnvVar } from "../utils/getEnvVar.js";
+
 import { sortByList } from "../db/models/Contact.js";
 
 export const getContactsController = async (req, res) => {
@@ -39,8 +43,18 @@ export const getContactsByIdController = async (req, res) => {
 };
 
 export const addContactsController = async (req, res) => {
+    const cloudinaryEnable = getEnvVar("CLOUD_ENABLE") === "true";
+    let photo;
+    if (req.file) {
+        if (cloudinaryEnable) {
+            photo = await saveFileToCloudinary(req.file);
+        } else {
+            photo = await saveFileToUploadDir(req.file);
+        }
+    };
+
     const { _id: userId } = req.user;
-    const data = await contactServices.addContact({ ...req.body, userId });
+    const data = await contactServices.addContact({ ...req.body, photo, userId });
 
     res.status(201).json({
         status: 201,
@@ -50,9 +64,19 @@ export const addContactsController = async (req, res) => {
 };
 
 export const patchContactController = async (req, res) => {
+    const cloudinaryEnable = getEnvVar("CLOUD_ENABLE") === "true";
+    let photo;
+    if (req.file) {
+        if (cloudinaryEnable) {
+            photo = await saveFileToCloudinary(req.file);
+        } else {
+            photo = await saveFileToUploadDir(req.file);
+        }
+    };
+
     const { _id: userId } = req.user;
     const { contactId: _id } = req.params;
-    const result = await contactServices.patchContact({_id, userId}, req.body);
+    const result = await contactServices.patchContact({_id, userId}, {...req.body, photo});
 
     if (!result) {
         throw createError(404, "Contact not found");
@@ -67,8 +91,9 @@ export const patchContactController = async (req, res) => {
 
 export const deleteContactController = async (req, res, next) => {
     const { _id: userId } = req.user;
-    const { contactId: _id } = req.params;
-    const contact = await contactServices.deleteContact({ _id, userId });
+    const { contactId } = req.params;
+
+    const contact = await contactServices.deleteContact(contactId, userId );
 
     if (!contact) {
         next(createError(404, "Contact not found"));

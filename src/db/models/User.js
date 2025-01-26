@@ -4,6 +4,7 @@ import { handleSaveError, setUpdateSetting } from "./hooks.js";
 import { emailRegexp } from "../../constants/users.js";
 
 
+
 const userSchema = new Schema({
     name: {
         type: String,
@@ -19,11 +20,17 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
+    verify: {
+        type: Boolean,
+        default: false,
+        required: true,
+    }
 },
     {
         versionKey:false,
         timestamps: true,
     },
+
 );
 
 userSchema.post("save", handleSaveError);

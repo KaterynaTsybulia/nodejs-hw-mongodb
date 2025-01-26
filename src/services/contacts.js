@@ -50,7 +50,7 @@ export const patchContact = async (filter, payload, options = {}) => {
     };
 };
 
-export const deleteContact = async (contactId) => {
-    const contact = await ContactCollection.findOneAndDelete({ _id: contactId });
+export const deleteContact = async (contactId, userId) => {
+    const contact = await ContactCollection.findOneAndDelete({ _id: contactId, userId });
     return contact;
 };

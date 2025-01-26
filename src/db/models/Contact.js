@@ -30,7 +30,10 @@ const contactSchema = new Schema({
         enum: typeList,
         required: true,
         default: "personal",
-    }
+    },
+    photo: {
+        type: String,
+    },
 },
     {
         versionKey:false,
