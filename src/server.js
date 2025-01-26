@@ -9,6 +9,8 @@ import authRouter from "./routers/auth.js";
 import { getEnvVar } from "./utils/getEnvVar.js";
 import { notFoundHandler } from "./middlewares/notFoundHandler.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
+import { swaggerDocs } from "./middlewares/swaggerDocs.js";
+import { UPLOADS_DIR } from "./constants/index.js";
 
 
 
@@ -31,6 +33,8 @@ export const setupServer = () => {
 
     app.use("/auth", authRouter);
     app.use("/contacts", contactsRouter);
+    app.use('/uploads', express.static(UPLOADS_DIR));
+    app.use("/api-docs", swaggerDocs());
 
     app.use(notFoundHandler);
 

@@ -1,5 +1,6 @@
 import path from 'node:path';
 
+
 export const SMTP = {
   SMTP_HOST: 'SMTP_HOST',
   SMTP_PORT: 'SMTP_PORT',
@@ -19,3 +20,8 @@ export const CLOUDINARY = {
   API_KEY: 'API_KEY',
   API_SECRET: 'API_SECRET',
 };
+
+
+export const PATH_JSON = path.join(process.cwd(), 'google-oauth.json');
+
+export const SWAGGER_PATH = path.join(process.cwd(), 'docs', 'swagger.json');
