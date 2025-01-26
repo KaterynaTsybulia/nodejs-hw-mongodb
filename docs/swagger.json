@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000"
+      "url": "https://nodejs-hw-mongodb-5ri8.onrender.com"
     }
   ],
   "tags": [
@@ -23,9 +23,7 @@
   "paths": {
     "/contacts": {
       "get": {
-        "tags": [
-          "Contacts"
-        ],
+        "tags": ["Contacts"],
         "summary": "Get list of contacts",
         "operationId": "getContacts",
         "description": "Get list of contacts with this endpoint",
@@ -65,10 +63,7 @@
             "name": "sortOrder",
             "schema": {
               "type": "string",
-              "enum": [
-                "asc",
-                "desc"
-              ],
+              "enum": ["asc", "desc"],
               "example": "asc"
             }
           },
@@ -88,11 +83,7 @@
             "schema": {
               "type": "string",
               "example": "personal",
-              "enum": [
-                "personal",
-                "home",
-                "work"
-              ]
+              "enum": ["personal", "home", "work"]
             }
           }
         ],
@@ -103,11 +94,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": [
-                    "status",
-                    "message",
-                    "data"
-                  ],
+                  "required": ["status", "message", "data"],
                   "properties": {
                     "status": {
                       "type": "integer",
@@ -172,9 +159,7 @@
         }
       },
       "post": {
-        "tags": [
-          "Contacts"
-        ],
+        "tags": ["Contacts"],
         "summary": "Create contact",
         "operationId": "createContact",
         "description": "Create a student with payload",
@@ -188,11 +173,7 @@
             "multipart/form-data": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "name",
-                  "phoneNumber",
-                  "contactType"
-                ],
+                "required": ["name", "phoneNumber", "contactType"],
                 "properties": {
                   "name": {
                     "description": "Contact name",
@@ -218,11 +199,7 @@
                     "description": "The type of the contact",
                     "type": "string",
                     "example": "personal",
-                    "enum": [
-                      "personal",
-                      "home",
-                      "work"
-                    ]
+                    "enum": ["personal", "home", "work"]
                   },
                   "photo": {
                     "description": "Link to contact photo",
@@ -241,11 +218,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": [
-                    "status",
-                    "message",
-                    "data"
-                  ],
+                  "required": ["status", "message", "data"],
                   "properties": {
                     "status": {
                       "type": "integer",
@@ -272,9 +245,7 @@
     },
     "/contacts/{id}": {
       "get": {
-        "tags": [
-          "Contacts"
-        ],
+        "tags": ["Contacts"],
         "summary": "Get contact by id",
         "operationId": "getContact",
         "description": "Get contact by id",
@@ -301,11 +272,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": [
-                    "status",
-                    "message",
-                    "data"
-                  ],
+                  "required": ["status", "message", "data"],
                   "properties": {
                     "status": {
                       "type": "integer",
@@ -335,9 +302,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "Contacts"
-        ],
+        "tags": ["Contacts"],
         "summary": "Patch contact by id",
         "operationId": "patchContact",
         "description": "Patch contact by id",
@@ -361,11 +326,7 @@
             "multipart/form-data": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "name",
-                  "phoneNumber",
-                  "contactType"
-                ],
+                "required": ["name", "phoneNumber", "contactType"],
                 "properties": {
                   "name": {
                     "description": "Contact name",
@@ -391,11 +352,7 @@
                     "description": "The type of the contact",
                     "type": "string",
                     "example": "personal",
-                    "enum": [
-                      "personal",
-                      "home",
-                      "work"
-                    ]
+                    "enum": ["personal", "home", "work"]
                   },
                   "photo": {
                     "description": "Link to contact photo",
@@ -414,11 +371,7 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": [
-                    "status",
-                    "message",
-                    "data"
-                  ],
+                  "required": ["status", "message", "data"],
                   "properties": {
                     "status": {
                       "type": "integer",
@@ -446,9 +399,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Contacts"
-        ],
+        "tags": ["Contacts"],
         "summary": "Delete contact by id",
         "operationId": "deleteContact",
         "description": "Delete contact by id",
@@ -523,11 +474,7 @@
             "description": "The type of the contact",
             "type": "string",
             "example": "personal",
-            "enum": [
-              "personal",
-              "home",
-              "work"
-            ]
+            "enum": ["personal", "home", "work"]
           },
           "email": {
             "description": "Contact email",
@@ -554,11 +501,7 @@
           "application/json": {
             "schema": {
               "type": "object",
-              "required": [
-                "status",
-                "message",
-                "data"
-              ],
+              "required": ["status", "message", "data"],
               "properties": {
                 "status": {
                   "type": "integer",
@@ -570,9 +513,7 @@
                 },
                 "data": {
                   "type": "object",
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "properties": {
                     "message": {
                       "type": "string",
@@ -591,10 +532,7 @@
           "application/json": {
             "schema": {
               "type": "object",
-              "required": [
-                "status",
-                "data"
-              ],
+              "required": ["status", "data"],
               "properties": {
                 "status": {
                   "type": "integer",
@@ -606,9 +544,7 @@
                 },
                 "data": {
                   "type": "object",
-                  "required": [
-                    "message"
-                  ],
+                  "required": ["message"],
                   "properties": {
                     "message": {
                       "type": "string",
