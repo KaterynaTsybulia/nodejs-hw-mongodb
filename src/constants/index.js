@@ -14,6 +14,7 @@ export const TEMP_UPLOAD_DIR = path.join(process.cwd(), 'temp');
 
 export const UPLOADS_DIR = path.join(process.cwd(), 'uploads');
 
+
 export const CLOUDINARY = {
   CLOUD_ENABLE: 'CLOUD_ENABLE',
   CLOUD_NAME: 'CLOUD_NAME',
