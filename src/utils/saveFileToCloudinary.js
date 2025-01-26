@@ -5,7 +5,7 @@ import { CLOUDINARY } from '../constants/index.js';
 import { getEnvVar } from "./getEnvVar.js";
 
 cloudinary.config({
-    secure: getEnvVar(CLOUDINARY.CLOUD_ENABLE),
+    secure: true,
     cloud_name: getEnvVar(CLOUDINARY.CLOUD_NAME),
     api_key: getEnvVar(CLOUDINARY.API_KEY),
     api_secret: getEnvVar(CLOUDINARY.API_SECRET),
