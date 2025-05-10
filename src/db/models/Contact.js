@@ -1,4 +1,6 @@
 import { Schema, model } from "mongoose";
+import { typeList } from "../../constants/contact.js";
+import { handleSaveError, setUpdateSetting } from "./hooks.js";
 
 const contactSchema = new Schema({
     name: {
@@ -19,15 +21,22 @@ const contactSchema = new Schema({
     },
     contactType: {
         type: String,
-        enum: ["work", "home", "personal"],
+        enum: typeList,
         require: true,
         default: "personal",
     },
 },
     {
+        versionKey:false,
         timestamps: true,
     },
 );
+
+contactSchema.post("save", handleSaveError);
+contactSchema.pre("findOneAndUpdate", setUpdateSetting);
+contactSchema.post("findOneAndUpdate", handleSaveError);
+
+export const sortByList = ["_id", "name", "phoneNumber", "email", "isFavourite", "contactType" ];
 
 const ContactCollection = model("contact", contactSchema);
 
