@@ -1,9 +1,16 @@
 import express from "express";
 import pino from "pino-http";
 import cors from 'cors';
+import cookieParser from "cookie-parser";
 
-import * as contactServices from "./services/contacts.js";
+import contactsRouter from "./routers/contacts.js";
+import authRouter from "./routers/auth.js";
+
 import { getEnvVar } from "./utils/getEnvVar.js";
+import { notFoundHandler } from "./middlewares/notFoundHandler.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
+import { swaggerDocs } from "./middlewares/swaggerDocs.js";
+import { UPLOADS_DIR } from "./constants/index.js";
 
 
 
@@ -12,6 +19,7 @@ export const setupServer = () => {
 
     app.use(cors());
     app.use(express.json());
+    app.use(express.static("uploads"));
 
     app.use(
         pino({
@@ -20,41 +28,17 @@ export const setupServer = () => {
             },
         }),
     );
-
-    app.get("/contacts", async (req, res) => {
-        const data = await contactServices.getContacts();
-        res.status(200).json({
-                status: 200,
-                message: "Successfully found contacts!",
-                data,
-            });
-    });
+    app.use(cookieParser());
 
 
-    app.get("/contacts/:contactId", async (req, res) => {
-        const { contactId } = req.params;
-        const data = await contactServices.getContactById(contactId);
+    app.use("/auth", authRouter);
+    app.use("/contacts", contactsRouter);
+    app.use('/uploads', express.static(UPLOADS_DIR));
+    app.use("/api-docs", swaggerDocs());
 
-        if (!data) {
-            return res.status(404).json({
-                status: 404,
-                message: 'Contact not found',
-            });
-        }
+    app.use(notFoundHandler);
 
-        res.status(200).json({
-                status: 200,
-                message: `Successfully found contact with id ${contactId}!`,
-                data,
-            });
-    });
-
-
-    app.use((req, res) => {
-        res.status(404).json({
-            message: 'Not found'
-        });
-    });
+    app.use(errorHandler);
 
 const port = Number(getEnvVar("Port", 3000));
 
